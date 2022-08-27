@@ -39,8 +39,16 @@ def download_songs(username: str, user_id: None | int, amount: None | int = None
         with open(f"{song_dir}\\cover.jpg", "wb") as file:
             file.write(requests.get(image).content)
 
-        code = subprocess.run(["ytmdl", "--quiet", "--skip-meta",
-                               "--output-dir", f"{song_dir}", song]).returncode
+        code = subprocess.run([
+            "ytmdl",
+            "--quiet",
+            "--skip-meta",
+            "--level", "ERROR",
+            "--disable-file",
+            "--output-dir", song_dir,
+            song
+        ]).returncode
+
         if code == 0:
             filename = next(i for i in os.listdir(song_dir) if i != "cover.jpg")
             os.rename(f"{song_dir}\\{filename}", f"{song_dir}\\audio.mp3")

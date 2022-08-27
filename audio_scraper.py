@@ -56,5 +56,5 @@ except vk_api.AuthError as err:
     exit()
 vk = vk_audio.VkAudio(session)
 
-# download_songs("gcd", None, 5)
+# download_songs("gcd", 96530526, 5)
 download_songs("vitos", 236793347, 5)

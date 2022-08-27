@@ -1,13 +1,12 @@
-import random
 import os
+import random
 import shutil
 import subprocess
 
+import pydub as pd
 import requests
 import vk_api
 import vk_audio
-
-import pydub as pd
 
 SONGS_DIR = os.getcwd() + "\\songs"
 

@@ -4,12 +4,17 @@ import subprocess
 
 import requests
 import vk_audio
+import vk_api
 
-vk = vk_audio.VkAudio(login='', password='')
+
 SONGS_DIR = os.getcwd() + "\\songs"
 
 
-# [("artist - title", "url"), ]
+def capcha_handler(capcha):
+    key = input(f"Enter capcha code {capcha.get_url()}:").strip()
+    return capcha.try_again(key)
+
+
 def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
     songs = []
     audios = vk.get_only_audios(user_id)
@@ -42,6 +47,14 @@ def download_songs(username: str, user_id: None | int, amount: None | int = None
         else:
             shutil.rmtree(song_dir)
 
+
+session = vk_api.VkApi(login='', password='', captcha_handler=capcha_handler)
+try:
+    session.auth()
+except vk_api.AuthError as err:
+    print(err)
+    exit()
+vk = vk_audio.VkAudio(session)
 
 # download_songs("gcd", None, 5)
 download_songs("vitos", 236793347, 5)

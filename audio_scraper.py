@@ -21,16 +21,20 @@ def captcha_handler(captcha):
     return captcha.try_again(key)
 
 
-def cut_audio(song_dir, filename):
-    audiofile = open(f"{song_dir}\\{filename}", "rb")
-    audio = pd.AudioSegment.from_mp3(audiofile)
-    audiofile.close()
-    if audio.duration_seconds > 60:
-        audio[30*1000:60*1000].export(f"{song_dir}\\audio.mp3", format="mp3")
-    else:
+def cut_audio(song_dir: str):
+    path = f"{song_dir}\\audio.mp3"
+    try:
+        with open(path, "rb") as file:
+            audio = pd.AudioSegment.from_mp3(file)
+    except:
         shutil.rmtree(song_dir)
         return
-    os.remove(f"{song_dir}\\{filename}")
+
+    if audio.duration_seconds > 60:
+        with open(path, "wb") as file:
+            audio[30*1000:60*1000].export(file, format="mp3")
+    else:
+        shutil.rmtree(song_dir)
 
 
 def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
@@ -72,7 +76,8 @@ def download_songs(username: str, user_id: None | int, amount: None | int = None
 
         if code == 0:
             filename = next(i for i in os.listdir(song_dir) if i != "cover.jpg")
-            cut_audio(song_dir, filename)
+            os.rename(f"{song_dir}\\{filename}", f"{song_dir}\\audio.mp3")
+            cut_audio(song_dir)
         else:
             shutil.rmtree(song_dir)
 

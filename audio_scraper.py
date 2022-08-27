@@ -11,6 +11,11 @@ import vk_api
 SONGS_DIR = os.getcwd() + "\\songs"
 
 
+def load_credentials() -> dict[str, str]:
+    with open("credentials.txt") as file:
+        return {k: v for k, v in [line.split() for line in file.readlines()]}
+
+
 def capcha_handler(capcha):
     key = input(f"Enter capcha code {capcha.get_url()}:").strip()
     return capcha.try_again(key)
@@ -57,7 +62,7 @@ def download_songs(username: str, user_id: None | int, amount: None | int = None
             shutil.rmtree(song_dir)
 
 
-session = vk_api.VkApi(login='', password='', captcha_handler=capcha_handler)
+session = vk_api.VkApi(captcha_handler=capcha_handler, **load_credentials())
 try:
     session.auth()
 except vk_api.AuthError as err:

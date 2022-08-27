@@ -2,3 +2,4 @@ env
 songs
 .cache
 *.json
+credentials.txt

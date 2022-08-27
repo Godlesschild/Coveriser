@@ -6,8 +6,9 @@ import requests
 import vk_api
 import vk_audio
 
-SONGS_DIR = os.getcwd() + "\\songs"
+import pydub as pd
 
+SONGS_DIR = os.getcwd() + "\\songs"
 
 def load_credentials() -> dict[str, str]:
     with open("credentials.txt") as file:
@@ -17,6 +18,15 @@ def load_credentials() -> dict[str, str]:
 def captcha_handler(captcha):
     key = input(f"Enter captcha code {captcha.get_url()}:").strip()
     return captcha.try_again(key)
+
+
+def cut_audio(song_dir, filename):
+    audiofile = open(f"{song_dir}\\{filename}", "rb")
+    audio = pd.AudioSegment.from_mp3(audiofile)
+    if audio.duration_seconds > 60:
+        audio[30*1000:60*1000].export(f"{song_dir}\\audio", format="mp3")
+    else:
+        shutil.rmtree(song_dir)
 
 
 def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
@@ -55,7 +65,7 @@ def download_songs(username: str, user_id: None | int, amount: None | int = None
 
         if code == 0:
             filename = next(i for i in os.listdir(song_dir) if i != "cover.jpg")
-            os.rename(f"{song_dir}\\{filename}", f"{song_dir}\\audio.mp3")
+            cut_audio(song_dir, filename)
         else:
             shutil.rmtree(song_dir)
 
@@ -68,5 +78,5 @@ except vk_api.AuthError as err:
     exit()
 vk = vk_audio.VkAudio(session)
 
-# download_songs("gcd", 96530526, 5)
-download_songs("vitos", 236793347, 5)
+download_songs("gcd", 96530526, 5)
+# download_songs("vitos", 236793347, 5)

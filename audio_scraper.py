@@ -1,3 +1,4 @@
+import random
 import os
 import shutil
 import subprocess
@@ -9,6 +10,7 @@ import vk_audio
 import pydub as pd
 
 SONGS_DIR = os.getcwd() + "\\songs"
+
 
 def load_credentials() -> dict[str, str]:
     with open("credentials.txt") as file:
@@ -38,11 +40,14 @@ def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
     return songs
 
 
-def download_songs(username: str, user_id: None | int, amount: None | int = None):
+def download_songs(username: str, user_id: None | int, amount: None | int = None, shuffle: bool = False):
     user_dir = SONGS_DIR + f"\\{username}\\"
     os.makedirs(user_dir, exist_ok=True)
 
     songs = songs_with_cover(user_id)
+
+    if shuffle:
+        random.shuffle(songs)
     if amount is not None:
         songs = songs[:amount]
 
@@ -78,5 +83,6 @@ except vk_api.AuthError as err:
     exit()
 vk = vk_audio.VkAudio(session)
 
-download_songs("gcd", 96530526, 5)
+
+download_songs("gcd", 96530526, 5, True)
 # download_songs("vitos", 236793347, 5)

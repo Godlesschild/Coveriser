@@ -5,8 +5,6 @@ import subprocess
 import requests
 import vk_api
 import vk_audio
-import vk_api
-
 
 SONGS_DIR = os.getcwd() + "\\songs"
 

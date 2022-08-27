@@ -14,9 +14,9 @@ def load_credentials() -> dict[str, str]:
         return {k: v for k, v in [line.split() for line in file.readlines()]}
 
 
-def capcha_handler(capcha):
-    key = input(f"Enter capcha code {capcha.get_url()}:").strip()
-    return capcha.try_again(key)
+def captcha_handler(captcha):
+    key = input(f"Enter captcha code {captcha.get_url()}:").strip()
+    return captcha.try_again(key)
 
 
 def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
@@ -60,7 +60,7 @@ def download_songs(username: str, user_id: None | int, amount: None | int = None
             shutil.rmtree(song_dir)
 
 
-session = vk_api.VkApi(captcha_handler=capcha_handler, **load_credentials())
+session = vk_api.VkApi(captcha_handler=captcha_handler, **load_credentials())
 try:
     session.auth()
 except vk_api.AuthError as err:

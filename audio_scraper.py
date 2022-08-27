@@ -24,7 +24,7 @@ def cut_audio(song_dir, filename):
     audiofile = open(f"{song_dir}\\{filename}", "rb")
     audio = pd.AudioSegment.from_mp3(audiofile)
     if audio.duration_seconds > 60:
-        audio[30*1000:60*1000].export(f"{song_dir}\\audio", format="mp3")
+        audio[30*1000:60*1000].export(f"{song_dir}\\audio.mp3", format="mp3")
     else:
         shutil.rmtree(song_dir)
 

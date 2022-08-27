@@ -25,10 +25,13 @@ def captcha_handler(captcha):
 def cut_audio(song_dir, filename):
     audiofile = open(f"{song_dir}\\{filename}", "rb")
     audio = pd.AudioSegment.from_mp3(audiofile)
+    audiofile.close()
     if audio.duration_seconds > 60:
         audio[30*1000:60*1000].export(f"{song_dir}\\audio.mp3", format="mp3")
     else:
         shutil.rmtree(song_dir)
+        return
+    os.remove(f"{song_dir}\\{filename}")
 
 
 def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:

@@ -3,6 +3,7 @@ import shutil
 import subprocess
 
 import requests
+import vk_api
 import vk_audio
 import vk_api
 

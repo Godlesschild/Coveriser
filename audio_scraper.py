@@ -41,7 +41,7 @@ def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
     songs = []
     audios = vk.get_only_audios(user_id)
     for audio in audios:
-        if audio.image != "":
+        if audio.image != "" and not(any(e in audio.title for e in '\\/:*?"<>|')):
             songs.append((f"{audio.artist} - {audio.title}", audio.image))
     return songs
 

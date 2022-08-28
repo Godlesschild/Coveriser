@@ -33,6 +33,7 @@ def cut_audio(song_dir: str):
     if audio.duration_seconds > 60:
         with open(path, "wb") as file:
             audio[30*1000:60*1000].export(file, format="mp3")
+
     else:
         shutil.rmtree(song_dir)
 

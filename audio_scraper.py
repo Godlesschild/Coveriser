@@ -47,7 +47,7 @@ def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
     return songs
 
 
-def download_songs(username: str, user_id: None | int, amount: None | int = None, shuffle: bool = False):
+def download_songs(username: str, user_id: None | int, amount: None | int = None, shuffle: bool = False, redownload: bool = False):
     user_dir = SONGS_DIR + f"\\{username}\\"
     os.makedirs(user_dir, exist_ok=True)
 
@@ -61,7 +61,11 @@ def download_songs(username: str, user_id: None | int, amount: None | int = None
     for song, image in songs:
         song_dir = user_dir + song
 
-        os.makedirs(song_dir, exist_ok=True)
+        try:
+            os.makedirs(song_dir, exist_ok=redownload)
+        except OSError:
+            continue
+
         with open(f"{song_dir}\\cover.jpg", "wb") as file:
             file.write(requests.get(image).content)
 

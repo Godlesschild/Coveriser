@@ -30,7 +30,7 @@ def cut_audio(song_dir: str):
         shutil.rmtree(song_dir)
         return
 
-    if audio.duration_seconds > 60:
+    if 60 <= audio.duration_seconds <= 6 * 60:
         with open(path, "wb") as file:
             audio[30*1000:60*1000].export(file, format="mp3")
 
@@ -42,7 +42,7 @@ def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
     songs = []
     audios = vk.get_only_audios(user_id)
     for audio in audios:
-        if audio.image != "" and not(any(e in audio.title for e in '\\/:*?"<>|')):
+        if audio.image != "" and not (any(e in audio.title for e in '\\/:*?"<>|')):
             songs.append((f"{audio.artist} - {audio.title}", audio.image))
     return songs
 

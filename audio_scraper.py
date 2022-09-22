@@ -42,8 +42,8 @@ def songs_with_cover(user_id: None | int) -> list[tuple[str, str]]:
     songs = []
     audios = vk.get_only_audios(user_id)
     for audio in audios:
-        if audio.image != "" and not (any(e in audio.title for e in '\\/:*?"<>|')):
-            songs.append((f"{audio.artist} - {audio.title}", audio.image))
+        if audio.image != "" and not (any(e in audio.title for e in '\\/:*?"<>|#&')):
+            songs.append((f"{audio.artist.strip()} - {audio.title.strip()}", audio.image))
     return songs
 
 
@@ -72,6 +72,7 @@ def download_songs(username: str, user_id: None | int, amount: None | int = None
         code = subprocess.run([
             "ytmdl",
             "--quiet",
+            "--ignore-errors",
             "--skip-meta",
             "--level", "ERROR",
             "--disable-file",

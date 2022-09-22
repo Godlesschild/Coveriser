@@ -1,5 +1,10 @@
 env
-songs
 .cache
 *.json
+
+songs
+logs
+results
+*.csv
+
 credentials.txt
